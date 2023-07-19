@@ -1,18 +1,23 @@
 package ru.netology.game;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Game {
-    private List<Player> registeredPlayers = new ArrayList<>();
+
+    private Map<String, Player> players = new HashMap<>();
 
     public void register(Player player) {
-        registeredPlayers.add(player);
+        players.put(player.getName(), player);
     }
 
-    public int round(String playerName1, String playerName2) {
-        Player player1 = findRegisteredPlayer(playerName1);
-        Player player2 = findRegisteredPlayer(playerName2);
+    public Player findRegisteredPlayer(String playerName) {
+        return players.get(playerName);
+    }
+
+    public int round(String playerName1, String playerName2) throws NotRegisteredException {
+        Player player1 = players.get(playerName1);
+        Player player2 = players.get(playerName2);
 
         if (player1 == null || player2 == null) {
             throw new NotRegisteredException("Оба игрока должны быть зарегистрированы");
@@ -25,14 +30,5 @@ public class Game {
         } else {
             return 0;
         }
-    }
-
-    public Player findRegisteredPlayer(String playerName) {
-        for (Player player : registeredPlayers) {
-            if (player.getName().equals(playerName)) {
-                return player;
-            }
-        }
-        return null;
     }
 }
